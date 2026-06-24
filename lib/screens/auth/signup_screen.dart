@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/auth_text_field.dart';
 import '../../services/auth_service.dart';
+import '../../utils/error_handler.dart';
 import '../main_dashboard_screen.dart';
 import 'login_screen.dart';
 import 'waiting_approval_screen.dart';
@@ -56,9 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceAll('Exception: ', ''))),
-      );
+      ErrorHandler.showSnackBar(context, e);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

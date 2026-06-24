@@ -133,7 +133,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen>
             child: child,
           ),
           child: Image.asset(
-            'assets/images/image.png',
+            'assets/images/image.webp',
             width: 60,
             height: 70,
             fit: BoxFit.contain,
@@ -528,24 +528,24 @@ class _MainDashboardScreenState extends State<MainDashboardScreen>
 
     // All products — 'image' uses Image.asset, 'emoji' is fallback
     final List<Map<String, dynamic>> products = [
-      {'name': 'Tomato',         'image': 'assets/images/tomato.png',   'unit': '1 kg',    'price': 85.0,  'color': const Color(0xFFFF6B6B)},
-      {'name': 'Sugar',          'image': 'assets/images/sugar.png',    'unit': '1 kg',    'price': 120.0, 'color': const Color(0xFFFAD7A0)},
-      {'name': 'Potato',         'image': 'assets/images/potato.png',    'unit': '1 kg',    'price': 60.0,  'color': const Color(0xFFD4A574)},
-      {'name': 'Lentils',        'image': 'assets/images/lentils.png',   'unit': '1 kg',    'price': 145.0, 'color': const Color(0xFFE67E22)},
-      {'name': 'Pasta',          'image': 'assets/images/pasta.png',    'unit': '500 g',   'price': 55.0,  'color': const Color(0xFFF7DC6F)},
-      {'name': 'Macaroni',       'image': 'assets/images/macaroni.png', 'unit': '400 g',   'price': 48.0,  'color': const Color(0xFFF0E68C)},
-      {'name': 'Curry Spice',    'image': 'assets/images/curry_spice.png','unit': '100 g',  'price': 70.0,  'color': const Color(0xFFFF8C00)},
-      {'name': 'Soap (Fesasi)',  'image': 'assets/images/soap.png',     'unit': '1 pc',    'price': 35.0,  'color': const Color(0xFF87CEEB)},
-      {'name': 'Injera',         'image': 'assets/images/injera.png',   'unit': '1 pack',  'price': 25.0,  'color': const Color(0xFFDEB887)},
-      {'name': 'Sossi Mince',    'image': 'assets/images/sossi.png',    'unit': '400 g',   'price': 55.0,  'color': const Color(0xFFE8A87C)},
-      {'name': 'Coca-Cola',      'image': 'assets/images/cocacola.png', 'unit': '500 ml',  'price': 45.0,  'color': const Color(0xFFE53935)},
-      {'name': 'Sunflower Oil',  'image': 'assets/images/sunflower_oil.png','unit': '5 L',  'price': 580.0, 'color': const Color(0xFFFDD835)},
-      {'name': 'Bread (Dabo)',   'emoji': '🍞',                          'unit': '1 pc',    'price': 22.0,  'color': const Color(0xFFD7A05A)},
-      {'name': 'Awash Wine',     'image': 'assets/images/awash_wine.png','unit': '750 ml',  'price': 280.0, 'color': const Color(0xFF800020)},
-      {'name': 'Water (Kaliot)', 'emoji': '💧',                          'unit': '1.5 L',   'price': 18.0,  'color': const Color(0xFF4FC3F7)},
-      {'name': 'Eggs (Enkutat)', 'emoji': '🥚',                          'unit': '12 pcs',  'price': 120.0, 'color': const Color(0xFFFFF9C4)},
-      {'name': 'Chicken (Doro)', 'emoji': '🍗',                          'unit': '1 kg',    'price': 320.0, 'color': const Color(0xFFFFCC80)},
-      {'name': 'Laundry Det.',   'emoji': '🧺',                          'unit': '1 kg',    'price': 95.0,  'color': const Color(0xFF81D4FA)},
+      {'name': 'Tomato',         'emoji': '🍅',  'unit': '1 kg',    'price': 85.0,  'color': const Color(0xFFFF6B6B)},
+      {'name': 'Sugar',          'emoji': '🍬',  'unit': '1 kg',    'price': 120.0, 'color': const Color(0xFFFAD7A0)},
+      {'name': 'Potato',         'emoji': '🥔',  'unit': '1 kg',    'price': 60.0,  'color': const Color(0xFFD4A574)},
+      {'name': 'Lentils',        'emoji': '🫘',  'unit': '1 kg',    'price': 145.0, 'color': const Color(0xFFE67E22)},
+      {'name': 'Pasta',          'emoji': '🍝',  'unit': '500 g',   'price': 55.0,  'color': const Color(0xFFF7DC6F)},
+      {'name': 'Macaroni',       'emoji': '🍜',  'unit': '400 g',   'price': 48.0,  'color': const Color(0xFFF0E68C)},
+      {'name': 'Curry Spice',    'emoji': '🌶️', 'unit': '100 g',   'price': 70.0,  'color': const Color(0xFFFF8C00)},
+      {'name': 'Soap (Fesasi)',  'emoji': '🧼',  'unit': '1 pc',    'price': 35.0,  'color': const Color(0xFF87CEEB)},
+      {'name': 'Injera',         'emoji': '🫓',  'unit': '1 pack',  'price': 25.0,  'color': const Color(0xFFDEB887)},
+      {'name': 'Sossi Mince',    'emoji': '🥩',  'unit': '400 g',   'price': 55.0,  'color': const Color(0xFFE8A87C)},
+      {'name': 'Coca-Cola',      'emoji': '🥤',  'unit': '500 ml',  'price': 45.0,  'color': const Color(0xFFE53935)},
+      {'name': 'Sunflower Oil',  'emoji': '🫙',  'unit': '5 L',     'price': 580.0, 'color': const Color(0xFFFDD835)},
+      {'name': 'Bread (Dabo)',   'emoji': '🍞',  'unit': '1 pc',    'price': 22.0,  'color': const Color(0xFFD7A05A)},
+      {'name': 'Awash Wine',     'emoji': '🍷',  'unit': '750 ml',  'price': 280.0, 'color': const Color(0xFF800020)},
+      {'name': 'Water (Kaliot)', 'emoji': '💧',  'unit': '1.5 L',   'price': 18.0,  'color': const Color(0xFF4FC3F7)},
+      {'name': 'Eggs (Enkutat)', 'emoji': '🥚',  'unit': '12 pcs',  'price': 120.0, 'color': const Color(0xFFFFF9C4)},
+      {'name': 'Chicken (Doro)', 'emoji': '🍗',  'unit': '1 kg',    'price': 320.0, 'color': const Color(0xFFFFCC80)},
+      {'name': 'Laundry Det.',   'emoji': '🧺',  'unit': '1 kg',    'price': 95.0,  'color': const Color(0xFF81D4FA)},
     ];
 
     final List<Map<String, dynamic>> categories = [
@@ -750,17 +750,17 @@ class _MainDashboardScreenState extends State<MainDashboardScreen>
                   children: [
                     Row(
                       children: [
-                        _buildFloatingImage('assets/images/tomato.png', 40),
+                        _buildFloatingImage('assets/images/tomato.webp', 40),
                         const SizedBox(width: 8),
-                        _buildFloatingImage('assets/images/potato.png', 36),
+                        _buildFloatingImage('assets/images/potato.webp', 36),
                       ],
                     ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        _buildFloatingImage('assets/images/soap.png', 34),
+                        _buildFloatingImage('assets/images/soap.webp', 34),
                         const SizedBox(width: 8),
-                        _buildFloatingImage('assets/images/cocacola.png', 38),
+                        _buildFloatingImage('assets/images/cocacola.webp', 38),
                       ],
                     ),
                   ],

@@ -24,31 +24,30 @@ class ApiService {
 
   /// Automatically selects the correct backend URL based on environment:
   String get baseUrl {
-    // A. Use dart-define URL if provided at compile time
+    // Use explicit URL if provided via dart-define at compile time.
     if (_dartDefineUrl.isNotEmpty) {
       return _dartDefineUrl;
     }
 
-    // B. If running in Release (production) mode, use Render URL
+    // In release mode (production), always use the Render URL.
     const bool isRelease = const bool.fromEnvironment('dart.vm.product');
     if (isRelease) {
       return _productionUrl;
     }
 
-    // C. Web (Chrome/Edge) uses localhost
+    // Web (Chrome) also uses the public Render URL.
     if (kIsWeb) {
-      return "http://localhost:3000";
+      return _productionUrl;
     }
 
-    // D. Android Emulator uses special alias 10.0.2.2
-    final bool isEmulator = defaultTargetPlatform == TargetPlatform.android &&
-        _isEmulatorEnvironment();
+    // Android emulator uses the special alias.
+    final bool isEmulator = defaultTargetPlatform == TargetPlatform.android && _isEmulatorEnvironment();
     if (isEmulator) {
       return "http://10.0.2.2:3000";
     }
 
-    // E. Real physical Android/iOS device uses PC's LAN IP
-    return "http://$_localIp:3000";
+    // Any other device (physical Android/iOS) should use the public backend URL.
+    return _productionUrl;
   }
 
   /// Returns true when running inside an Android emulator.
