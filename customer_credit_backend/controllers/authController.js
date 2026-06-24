@@ -60,7 +60,13 @@ exports.login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
+    // Allow login with username or email (case-insensitive)
+    const user = await User.findOne({
+      $or: [
+        { username: username },
+        { email: username.toLowerCase() }
+      ]
+    });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
