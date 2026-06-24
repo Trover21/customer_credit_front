@@ -1,0 +1,13 @@
+{
+  "name": "customer-credit-root",
+  "version": "1.0.0",
+  "description": "Root package.json to redirect Render deployment to customer_credit_backend",
+  "main": "customer_credit_backend/index.js",
+  "scripts": {
+    "postinstall": "cd customer_credit_backend && npm install",
+    "start": "cd customer_credit_backend && node index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
