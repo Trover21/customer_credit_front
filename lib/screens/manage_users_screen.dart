@@ -53,6 +53,45 @@ class _ManageUsersScreenState extends State<ManageUsersScreen> {
     }
   }
 
+  Future<void> _deleteUser(String userId, String username) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete User'),
+        content: Text('Are you sure you want to permanently delete user "$username"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: kCoral500),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true) return;
+
+    setState(() => _isLoading = true);
+    try {
+      await _authService.deleteUser(userId);
+      _fetchUsers(); // Refresh the list
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User "$username" deleted successfully!'), backgroundColor: kPrimaryGreen),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString().replaceAll('Exception: ', '')), backgroundColor: kCoral500),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -151,6 +190,12 @@ class _ManageUsersScreenState extends State<ManageUsersScreen> {
                                         onPressed: () => _updateRole(user['_id'], 'pending'),
                                         child: const Text('Revoke'),
                                       ),
+                                    const SizedBox(width: 8),
+                                    IconButton(
+                                      icon: const Icon(Icons.delete_outline, color: kCoral500),
+                                      tooltip: 'Remove User',
+                                      onPressed: () => _deleteUser(user['_id'], user['username'] ?? ''),
+                                    ),
                                   ],
                                 ),
                         ),

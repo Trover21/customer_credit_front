@@ -177,3 +177,24 @@ exports.updateUserRole = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// @desc    Delete a user (Admin only)
+// @route   DELETE /api/auth/users/:id
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Prevent admin from deleting themselves
+    if (user._id.toString() === req.user.id.toString()) {
+      return res.status(400).json({ message: 'You cannot delete yourself' });
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: 'User removed successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

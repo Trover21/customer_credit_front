@@ -123,6 +123,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen>
 
     // ─── AKU Logo ───────────────────────────────────────────────────
     Widget logoWidget = Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         // AKU animated logo box
         AnimatedBuilder(
@@ -138,7 +139,16 @@ class _MainDashboardScreenState extends State<MainDashboardScreen>
             fit: BoxFit.contain,
           ),
         ),
-       
+        const SizedBox(width: 8),
+        Text(
+          "AKU Supermarket",
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+            color: theme.textTheme.bodyLarge?.color,
+          ),
+        ),
       ],
     );
 

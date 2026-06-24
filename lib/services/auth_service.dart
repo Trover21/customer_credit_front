@@ -137,4 +137,20 @@ class AuthService {
       throw Exception(msg);
     }
   }
+
+  Future<void> deleteUser(String userId) async {
+    final token = await getToken();
+    final response = await http.delete(
+      Uri.parse('${_apiService.baseUrl}/api/auth/users/$userId'),
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode != 200) {
+      final msg = jsonDecode(response.body)['message'] ?? 'Failed to delete user';
+      throw Exception(msg);
+    }
+  }
 }
