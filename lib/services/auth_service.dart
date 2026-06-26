@@ -1,43 +1,73 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'api_service.dart';
 
 class AuthService {
   final _storage = const FlutterSecureStorage();
   final ApiService _apiService = ApiService();
 
-  // Save token
+  // ── Token ──────────────────────────────────────────────────────────────────
+
   Future<void> saveToken(String token) async {
-    await _storage.write(key: 'auth_token', value: token);
+    if (kIsWeb) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('auth_token', token);
+    } else {
+      await _storage.write(key: 'auth_token', value: token);
+    }
   }
 
-  // Get token
   Future<String?> getToken() async {
+    if (kIsWeb) {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('auth_token');
+    }
     return await _storage.read(key: 'auth_token');
   }
 
-  // Save role
+  // ── Role ───────────────────────────────────────────────────────────────────
+
   Future<void> saveRole(String role) async {
-    await _storage.write(key: 'user_role', value: role);
+    if (kIsWeb) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_role', role);
+    } else {
+      await _storage.write(key: 'user_role', value: role);
+    }
   }
 
-  // Get role
   Future<String?> getRole() async {
+    if (kIsWeb) {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('user_role');
+    }
     return await _storage.read(key: 'user_role');
   }
 
-  // Delete all data (Logout)
+  // ── Logout ─────────────────────────────────────────────────────────────────
+
   Future<void> logout() async {
-    await _storage.deleteAll();
+    if (kIsWeb) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('auth_token');
+      await prefs.remove('user_role');
+    } else {
+      await _storage.deleteAll();
+    }
   }
 
-  // Sign up
-  Future<Map<String, dynamic>> signUp(String username, String email, String password) async {
+  // ── Sign Up ────────────────────────────────────────────────────────────────
+
+  Future<Map<String, dynamic>> signUp(
+      String username, String email, String password) async {
     final response = await http.post(
       Uri.parse('${_apiService.baseUrl}/api/auth/signup'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'username': username, 'email': email, 'password': password}),
+      body: jsonEncode(
+          {'username': username, 'email': email, 'password': password}),
     );
 
     final data = jsonDecode(response.body);
@@ -51,8 +81,10 @@ class AuthService {
     }
   }
 
-  // Login
-  Future<Map<String, dynamic>> login(String username, String password) async {
+  // ── Login ──────────────────────────────────────────────────────────────────
+
+  Future<Map<String, dynamic>> login(
+      String username, String password) async {
     final response = await http.post(
       Uri.parse('${_apiService.baseUrl}/api/auth/login'),
       headers: {'Content-Type': 'application/json'},
@@ -70,7 +102,8 @@ class AuthService {
     }
   }
 
-  // Forgot Password
+  // ── Forgot Password ────────────────────────────────────────────────────────
+
   Future<void> forgotPassword(String email) async {
     final response = await http.post(
       Uri.parse('${_apiService.baseUrl}/api/auth/forgot-password'),
@@ -84,8 +117,10 @@ class AuthService {
     }
   }
 
-  // Reset Password
-  Future<void> resetPassword(String email, String resetCode, String newPassword) async {
+  // ── Reset Password ─────────────────────────────────────────────────────────
+
+  Future<void> resetPassword(
+      String email, String resetCode, String newPassword) async {
     final response = await http.post(
       Uri.parse('${_apiService.baseUrl}/api/auth/reset-password'),
       headers: {'Content-Type': 'application/json'},
@@ -101,7 +136,8 @@ class AuthService {
       throw Exception(data['message'] ?? 'Failed to reset password');
     }
   }
-  // --- NEW ADMIN FUNCTIONS ---
+
+  // ── Admin: Users ───────────────────────────────────────────────────────────
 
   Future<List<dynamic>> fetchUsers() async {
     final token = await getToken();
@@ -116,7 +152,8 @@ class AuthService {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      final msg = jsonDecode(response.body)['message'] ?? 'Failed to fetch users';
+      final msg =
+          jsonDecode(response.body)['message'] ?? 'Failed to fetch users';
       throw Exception(msg);
     }
   }
@@ -133,7 +170,8 @@ class AuthService {
     );
 
     if (response.statusCode != 200) {
-      final msg = jsonDecode(response.body)['message'] ?? 'Failed to update user';
+      final msg =
+          jsonDecode(response.body)['message'] ?? 'Failed to update user';
       throw Exception(msg);
     }
   }
@@ -149,7 +187,8 @@ class AuthService {
     );
 
     if (response.statusCode != 200) {
-      final msg = jsonDecode(response.body)['message'] ?? 'Failed to delete user';
+      final msg =
+          jsonDecode(response.body)['message'] ?? 'Failed to delete user';
       throw Exception(msg);
     }
   }

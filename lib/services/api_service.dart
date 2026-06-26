@@ -1,64 +1,34 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/customer.dart';
 import '../models/transaction_model.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService {
-  /// =====================================================
-  /// ⚠️ ENVIRONMENT CONFIGURATION
-  /// =====================================================
-  // 1. Pass at build time: flutter run --dart-define=BACKEND_URL=https://your-url.onrender.com
-  static const String _dartDefineUrl = String.fromEnvironment('BACKEND_URL');
+  static const String _dartDefineUrl =String.fromEnvironment('BACKEND_URL');
 
-  // 2. Default production/release URL (Render)
-  // ⚠️ ጻሓፎ ኣብዚ ናይ Render URL-ካ ምስ ጸዓንካዮ!
-  static const String _productionUrl = "https://customer-credit-backend.onrender.com";
-
-
-  // 3. Local computer IP for debug mode on physical Android devices
-  // (ipconfig ኣብ cmd ጽሓፍ፣ IPv4 Address ርኣዮ)
-  static const String _localIp = "172.31.232.19"; 
-
-  /// Automatically selects the correct backend URL based on environment:
-  String get baseUrl {
-    // Use explicit URL if provided via dart-define at compile time.
-    if (_dartDefineUrl.isNotEmpty) {
-      return _dartDefineUrl;
-    }
-
-    // In release mode (production), always use the Render URL.
-    const bool isRelease = const bool.fromEnvironment('dart.vm.product');
-    if (isRelease) {
-      return _productionUrl;
-    }
-
-    // Web (Chrome) also uses the public Render URL.
-    if (kIsWeb) {
-      return _productionUrl;
-    }
-
-    // Android emulator uses the special alias.
-    final bool isEmulator = defaultTargetPlatform == TargetPlatform.android && _isEmulatorEnvironment();
-    if (isEmulator) {
-      return "http://10.0.2.2:3000";
-    }
-
-    // Any other device (physical Android/iOS) should use the public backend URL.
-    return _productionUrl;
+  static const String _productionUrl ="https://customer-credit-backend.onrender.com";
+ String get baseUrl {
+  if (_dartDefineUrl.isNotEmpty) {
+    return _dartDefineUrl;
   }
 
-  /// Returns true when running inside an Android emulator.
-  bool _isEmulatorEnvironment() {
-    return !const bool.fromEnvironment('dart.vm.product');
-  }
+  return _productionUrl;
+}
 
   /// Helper method to construct headers with JWT
   Future<Map<String, String>> _getHeaders() async {
-    const storage = FlutterSecureStorage();
-    final token = await storage.read(key: 'auth_token');
+    String? token;
+    if (kIsWeb) {
+      final prefs = await SharedPreferences.getInstance();
+      token = prefs.getString('auth_token');
+    } else {
+      const storage = FlutterSecureStorage();
+      token = await storage.read(key: 'auth_token');
+    }
     return {
       "Content-Type": "application/json",
       if (token != null) "Authorization": "Bearer $token",
