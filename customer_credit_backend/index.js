@@ -357,4 +357,18 @@ app.delete('/permanent-delete-transaction/:customerId/:transactionId', protect, 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+
+  // Keep Render free tier awake by self-pinging every 14 minutes
+  const RENDER_URL = process.env.RENDER_EXTERNAL_URL;
+  if (RENDER_URL) {
+    const https = require('https');
+    setInterval(() => {
+      https.get(`${RENDER_URL}/health`, (res) => {
+        console.log(`Keep-alive ping: ${res.statusCode}`);
+      }).on('error', (err) => {
+        console.log(`Keep-alive error: ${err.message}`);
+      });
+    }, 14 * 60 * 1000); // every 14 minutes
+    console.log(`Keep-alive ping started for ${RENDER_URL}`);
+  }
 });
