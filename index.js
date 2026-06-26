@@ -79,6 +79,10 @@ const Customer = mongoose.model('Customer', customerSchema);
    MongoDB Connection
 ============================ */
 const uri = process.env.MONGO_URI;
+console.log("Database URI defined:", !!uri);
+if (!uri) {
+  console.log("All Env Keys:", Object.keys(process.env).filter(k => !k.toLowerCase().includes('pass') && !k.toLowerCase().includes('secret') && !k.toLowerCase().includes('key')));
+}
 
 mongoose.connect(uri)
   .then(() => {
