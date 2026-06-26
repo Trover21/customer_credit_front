@@ -54,5 +54,5 @@ node_modules/
 
 # Gemini Agent
 .gemini/
-
-
+.git_backup/
+**/customer_credit_backend/.git_backup/
